@@ -24,6 +24,7 @@ common_sqlite_flags := \
 	-DSQLITE_ENABLE_FTS3 \
 	-DSQLITE_ENABLE_FTS3_BACKWARDS \
 	-DSQLITE_ENABLE_FTS4 \
+	-DSQLITE_ENABLE_ATOMIC_WRITE \
 	-DSQLITE_OMIT_BUILTIN_TEST \
 	-DSQLITE_OMIT_COMPILEOPTION_DIAGS \
 	-DSQLITE_OMIT_LOAD_EXTENSION \
@@ -40,6 +41,12 @@ ifneq ($(TARGET_ARCH),arm)
 LOCAL_LDLIBS += -lpthread -ldl
 endif
 
+ifeq ($(TARGET_ARCH),x86)
+common_sqlite_flags += \
+    -fno-pic \
+    -fno-pie
+endif
+
 LOCAL_CFLAGS += $(common_sqlite_flags) -DUSE_PREAD64 -Dfdatasync=fdatasync
 
 LOCAL_SHARED_LIBRARIES := libdl
@@ -49,7 +56,8 @@ LOCAL_C_INCLUDES += $(call include-path-for, system-core)/cutils
 LOCAL_SHARED_LIBRARIES += liblog \
             libicuuc \
             libicui18n \
-            libutils
+            libutils \
+            liblog
 
 # include android specific methods
 LOCAL_WHOLE_STATIC_LIBRARIES := libsqlite3_android
