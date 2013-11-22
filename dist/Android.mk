@@ -24,7 +24,6 @@ common_sqlite_flags := \
 	-DSQLITE_ENABLE_FTS3 \
 	-DSQLITE_ENABLE_FTS3_BACKWARDS \
 	-DSQLITE_ENABLE_FTS4 \
-	-DSQLITE_ENABLE_ATOMIC_WRITE \
 	-DSQLITE_OMIT_BUILTIN_TEST \
 	-DSQLITE_OMIT_COMPILEOPTION_DIAGS \
 	-DSQLITE_OMIT_LOAD_EXTENSION \
@@ -39,12 +38,6 @@ LOCAL_SRC_FILES := $(common_src_files)
 
 ifneq ($(TARGET_ARCH),arm)
 LOCAL_LDLIBS += -lpthread -ldl
-endif
-
-ifeq ($(TARGET_ARCH),x86)
-common_sqlite_flags += \
-    -fno-pic \
-    -fno-pie
 endif
 
 LOCAL_CFLAGS += $(common_sqlite_flags) -DUSE_PREAD64 -Dfdatasync=fdatasync
