@@ -42,9 +42,11 @@ LOCAL_LDLIBS += -lpthread -ldl
 endif
 
 ifeq ($(TARGET_ARCH),x86)
-common_sqlite_flags += \
-    -fno-pic \
-    -fno-pie
+  ifneq ($(ENABLE_PIC_PIE),true)
+    common_sqlite_flags += \
+        -fno-pic \
+        -fno-pie
+  endif
 endif
 
 LOCAL_CFLAGS += $(common_sqlite_flags) -DUSE_PREAD64 -Dfdatasync=fdatasync \
