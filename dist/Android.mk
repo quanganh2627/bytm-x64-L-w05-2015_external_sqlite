@@ -29,6 +29,15 @@ common_sqlite_flags := \
 	-DSQLITE_OMIT_LOAD_EXTENSION \
 	-DSQLITE_DEFAULT_FILE_PERMISSIONS=0600
 
+ifeq (($TARGET_ARCH), x86)
+ifneq ($(BOARD_HAVE_SMALL_RAM), ture)
+	common_sqlite_flags += \
+		-fno-pic \
+		-fno-pie
+endif
+endif
+
+
 common_src_files := sqlite3.c
 
 # the device library
